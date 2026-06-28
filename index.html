@@ -1,0 +1,788 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>静岡・伊豆・東京 新婚旅行 しおり</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            -webkit-tap-highlight-color: transparent;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Hiragino Kaku Gothic ProN", "Hiragino Sans", Meiryo, sans-serif;
+            background-color: #f4f7f9;
+            color: #333333;
+            line-height: 1.6;
+            font-size: 16px;
+            padding: 10px;
+        }
+
+        .container {
+            max-width: 500px;
+            margin: 0 auto;
+            background: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            padding: 15px;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #eef2f5;
+            padding-bottom: 15px;
+        }
+
+        h1 {
+            font-size: 18px;
+            color: #2c3e50;
+            margin-bottom: 4px;
+        }
+
+        .subtitle {
+            font-size: 14px;
+            color: #7f8c8d;
+            font-weight: bold;
+        }
+
+        /* タブナビゲーション（Safari対応の横スクロール） */
+        .tabs {
+            display: flex;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+            background: #eef2f5;
+            border-radius: 8px;
+            padding: 4px;
+            margin-bottom: 20px;
+            gap: 4px;
+        }
+
+        .tabs::-webkit-scrollbar {
+            display: none;
+        }
+
+        .tab-btn {
+            flex: 0 0 auto;
+            padding: 8px 16px;
+            background: none;
+            border: none;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: bold;
+            color: #555;
+            cursor: pointer;
+        }
+
+        .tab-btn.active {
+            background: #ffffff;
+            color: #3498db;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        /* ページ切替エリア */
+        .page {
+            display: none;
+        }
+
+        .page.active {
+            display: block;
+        }
+
+        h2 {
+            font-size: 16px;
+            color: #ffffff;
+            background: #3498db;
+            padding: 8px 12px;
+            border-radius: 6px;
+            margin-bottom: 12px;
+        }
+
+        h3 {
+            font-size: 14px;
+            color: #2c3e50;
+            margin-bottom: 12px;
+            padding-left: 6px;
+            border-left: 4px solid #e67e22;
+        }
+
+        p.theme-desc {
+            font-size: 14px;
+            color: #555;
+            margin-bottom: 15px;
+            background: #fafafa;
+            padding: 10px;
+            border-radius: 6px;
+            border: 1px solid #eee;
+        }
+
+        /* タイムライン */
+        .timeline {
+            position: relative;
+            padding-left: 16px;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 4px;
+            top: 8px;
+            bottom: 8px;
+            width: 2px;
+            background: #d6e4ed;
+        }
+
+        .timeline-item {
+            position: relative;
+            margin-bottom: 20px;
+        }
+
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -16px;
+            top: 6px;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #3498db;
+            border: 2px solid #ffffff;
+            box-shadow: 0 0 0 2px #3498db;
+        }
+
+        .time {
+            font-size: 13px;
+            font-weight: bold;
+            color: #3498db;
+            display: block;
+        }
+
+        .event {
+            font-size: 15px;
+            font-weight: bold;
+            color: #2c3e50;
+        }
+
+        .detail {
+            font-size: 14px;
+            color: #444;
+            margin-top: 4px;
+            background: #f9f9f9;
+            padding: 8px 10px;
+            border-radius: 6px;
+        }
+
+        /* リンクボタンの共通スタイル（Safariでタップしやすい高さ） */
+        .link-block {
+            display: block;
+            background: #ebf5fb;
+            color: #2980b9;
+            border: 1px solid #d4e6f1;
+            padding: 10px;
+            border-radius: 6px;
+            font-size: 13px;
+            font-weight: bold;
+            text-decoration: none;
+            margin-top: 6px;
+            text-align: center;
+            word-break: break-all;
+        }
+
+        .link-block:active {
+            background: #d4e6f1;
+        }
+
+        .btn-url {
+            display: block;
+            background: #f4f7f9;
+            color: #333;
+            border: 1px solid #cbd5e1;
+            padding: 12px;
+            border-radius: 6px;
+            font-size: 13px;
+            text-decoration: none;
+            margin-bottom: 10px;
+            word-break: break-all;
+        }
+
+        .btn-url strong {
+            display: block;
+            color: #2c3e50;
+            margin-bottom: 2px;
+        }
+
+        /* テーブル設定（スマホ横スクロール） */
+        .table-container {
+            width: 100%;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+            margin-bottom: 20px;
+            border: 1px solid #e1e8ed;
+            border-radius: 6px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 13px;
+            min-width: 420px;
+        }
+
+        th, td {
+            border: 1px solid #e1e8ed;
+            padding: 10px 8px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f4f7f9;
+            color: #2c3e50;
+            font-weight: bold;
+        }
+
+        .total-box {
+            background: #fef9e7;
+            border: 1px solid #f9e79f;
+            border-radius: 6px;
+            padding: 12px;
+            font-size: 14px;
+            color: #7d6608;
+            margin-top: 15px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <h1>静岡・伊豆・東京 新婚旅行 3泊4日 タイムスケジュール</h1>
+        <div class="subtitle">成光 ＆ 菜々恵</div>
+    </header>
+
+    <!-- タブ切り替えボタン -->
+    <div class="tabs">
+        <button class="tab-btn active" onclick="switchTab('day1')">1日目</button>
+        <button class="tab-btn" onclick="switchTab('day2')">2日目</button>
+        <button class="tab-btn" onclick="switchTab('day3')">3日目</button>
+        <button class="tab-btn" onclick="switchTab('day4')">4日目</button>
+        <button class="tab-btn" onclick="switchTab('urls')">URL一覧</button>
+        <button class="tab-btn" onclick="switchTab('prices')">料金一覧</button>
+    </div>
+
+    <!-- 1日目 -->
+    <div id="day1" class="page active">
+        <h2>■ 1日目：6月29日(月)</h2>
+        <h3>【テーマ：大曲から出発！ 静岡上陸・東照宮参拝と清水のベイサイド観光】</h3>
+        <a href="https://www.google.com/maps/dir/?api=1&origin=北広島市大曲中央3丁目&waypoints=三井アウトレットパーク札幌北広島|新千歳空港|羽田空港|静岡駅|日本平夢テラス|久能山東照宮|三保松原&destination=エスパルスドリームプラザ" target="_blank" class="link-block">【1日目】全スポット周遊ルート(全体マップ)</a>
+        
+        <div class="timeline" style="margin-top: 15px;">
+            <div class="timeline-item">
+                <span class="time">06:00</span>
+                <div class="event">自宅(北広島市大曲中央3丁目)からタクシーに乗車</div>
+                <div class="detail">事前に予約しておいたタクシーに乗り、キャリーケースなどの荷物と一緒に「三井アウトレットパーク入口」バス停へ。朝一番の静かな空気の中、いよいよ新婚旅行のスタートです！<br>タクシー料金：約1,000円〜1,300円（迎車料金含む） / 移動時間：約5分</div>
+            </div>
+            <div class="timeline-item">
+                <span class="time">06:05</span>
+                <div class="event">「三井アウトレットパーク入口」バス停に到着</div>
+                <div class="detail">バス停で荷物を降ろし、少し息を整えながら空港連絡バスの到着を待ちます。</div>
+            </div>
+            <div class="timeline-item">
+                <span class="time">06:15頃</span>
+                <div class="event">新千歳空港連絡バス(北ト交通/北海道中央バス)に乗車</div>
+                <div class="detail">バスに乗り込めば、ここからは乗り換えなしで新千歳空港まで直行。座席に座ってのんびり外の景色を眺めているだけで、約45分で空港に到着します。<br>バス運賃：大人1名あたり約1,200円 / 乗車時間：約45分</div>
+                <a href="https://www.hokuto-kotsu.com/" target="_blank" class="link-block">新千歳空港連絡バス(北都交通) 公式サイト</a>
+            </div>
+            <div class="timeline-item">
+                <span class="time">07:00頃</span>
+                <div class="event">新千歳空港に到着</div>
+                <div class="detail">フライト (08:00発)の1時間前に「たっぷり余裕を持って」到着！自動チェックインや手荷物預けをスムーズに済ませたら、出発ロビー近くでゆっくり朝食を楽しみましょう。</div>
+            </div>
+            <div class="timeline-item">
+                <span class="time">08:00</span>
+                <div class="event">札幌(新千歳)発HD012便出発</div>
+            </div>
+            <div class="timeline-item">
+                <span class="time">09:35</span>
+                <div class="event">東京(羽田)空港 到着</div>
+            </div>
+            <div class="timeline-item">
+                <span class="time">09:50〜12:00</span>
+                <div class="event">羽田空港からモノレールと新幹線(ひかり号)を乗り継ぎ、一気に静岡駅へ移動します。</div>
+                <div class="detail">運賃：大人1名あたり約6,270円（京急線330円 + 新幹線ひかり自由席 5,940円）</div>
+            </div>
+            <div class="timeline-item">
+                <span class="time">12:00頃</span>
+                <div class="event">静岡駅に到着。</div>
+                <div class="detail">駅直結の「ホテルアソシア静岡」へ向かい、キャリーケースをフロントへ預けて身軽になります（チェックインは14時から可能です）。</div>
+                <a href="https://www.associa.com/sth/" target="_blank" class="link-block">ホテルアソシア静岡 公式サイト</a>
+            </div>
+            <div class="timeline-item">
+                <span class="time">12:15〜13:00</span>
+                <div class="event">昼食：浜松餃子(石松餃子 アスティ静岡店)</div>
+                <div class="detail">駅直結のアスティ内にあるため、レンタカー出発前にサクッと店舗で元祖・浜松餃子を味わえます。</div>
+            </div>
+            <div class="timeline-item">
+                <span class="time">13:00</span>
+                <div class="event">ホテルアソシア静岡でレンタカーを借りて、いよいよ静岡ドライブへ出発!</div>
+            </div>
+            <div class="timeline-item">
+                <span class="time">13:00〜13:30</span>
+                <div class="event">車で「日本平夢テラス」へ移動</div>
+                <a href="https://www.google.com/maps/dir/?api=1&origin=静岡駅&destination=日本平夢テラス" target="_blank" class="link-block">ナビ：静岡駅 → 日本平夢テラス(一般道：約25分)</a>
+            </div>
+            <div class="timeline-item">
+                <span class="time">13:30〜14:00</span>
+                <div class="event">日本平夢テラス</div>
+                <div class="detail">全方位ガラス張りの回廊からは、富士山、駿河湾、清水港、延伸する伊豆半島までを見渡す一大パノラマを贅沢に堪能できます。<br>入場料：無料</div>
+                <a href="https://nihondaira-yume-terrace.jp/" target="_blank" class="link-block">日本平夢テラス 公式サイト</a>
+            </div>
+            <div class="timeline-item">
+                <span class="time">14:00〜15:15</span>
+                <div class="event">日本平ロープウェイ → 久能山東照宮(★成光希望)</div>
+                <div class="detail">14:00発のロープウェイ (往復・片道5分)を利用します。山の下から続く1,159段の険しい石段を登る必要がなくなり、体力を温存しながら約1時間でスマートに国宝の美しい社殿を参拝・見学できます。<br>ロープウェイ往復+東照宮拝観セット券：1,950円</div>
+                <a href="https://www.shizutetsu-ropeway.co.jp/" target="_blank" class="link-block">日本平ロープウェイ 公式サイト</a>
+                <a href="https://www.toshogu.or.jp/" target="_blank" class="link-block">久能山東照宮 公式サイト</a>
+            </div>
+            <div class="timeline-item">
+                <span class="time">15:15〜15:45</span>
+                <div class="event">車で「三保松原」へ移動</div>
+                <a href="https://www.google.com/maps/dir/?api=1&origin=日本平夢テラス&destination=三保松原" target="_blank" class="link-block">ナビ：日本平夢テラス → 三保松原(一般道：約30分)</a>
+            </div>
+            <div class="timeline-item">
+                <span class="time">15:45〜16:45</span>
+                <div class="event">三保松原</div>
+                <div class="detail">樹齢数百年の松並木が続く「神の道」をのんびり歩いて砂浜へ。夕前の心地よい光の中で、波の音を聞きながら羽衣の松や富士山の絶景をバックに新婚旅行の記念写真を撮影します。<br>散策料：無料</div>
+                <a href="https://www.visit-shizuoka.com/spots/detail.php?kanko=336" target="_blank" class="link-block">三保松原(静岡市観光ガイド)</a>
+            </div>
+            <div class="timeline-item">
+                <span class="time">16:45〜17:05</span>
+                <div class="event">車で「エスパルスドリームプラザ」へ移動</div>
+                <a href="https://www.google.com/maps/dir/?api=1&origin=三保松原&destination=エスパルスドリームプラザ" target="_blank" class="link-block">ナビ：三保松原 → エスパルスドリームプラザ(一般道：約15分)</a>
+            </div>
+            <div class="timeline-item">
+                <span class="time">17:05〜18:05</span>
+                <div class="event">エスパルスドリームプラザ/清水マリンパーク (★夕方の観光スポット)</div>
+                <div class="detail">ヨットハーバーに面した洋風の城壁のような公園をロマンチックに散策。ライトアップされる観覧車からの清水湾内の眺めも抜群で、特別な夜の始まりにぴったりです。<br>入場料：無料(観覧車ドリームスカイは1人600円)</div>
+                <a href="https://www.dream-plaza.co.jp/" target="_blank" class="link-block">エスパルスドリームプラザ 公式サイト</a>
+            </div>
+            <div class="timeline-item">
+                <span class="time">18:05〜18:45</span>
+                <div class="event">車で静岡駅へ戻る (レンタカー返却)</div>
+                <div class="detail">夕方の混雑を考慮して移動。ホテルの足元でそのまま車を返せるため非常にスムーズです。お部屋へチェックインし、手ぶらになって一息つきます。</div>
+                <a href="https://www.google.com/maps/dir/?api=1&origin=エスパルスドリームプラザ&destination=静岡駅" target="_blank" class="link-block">ナビ：エスパルスドリームプラザ → 静岡駅(一般道：約25分)</a>
+            </div>
+            <div class="timeline-item">
+                <span class="time">19:30〜</span>
+                <div class="event">夕食：さわやかハンバーグ (炭焼きレストランさわやか)</div>
+                <div class="detail">駅前からタクシー(片道約1,500円〜2,000円)で、比較的待ち時間の少ない「静岡インター店」または「静岡池田店」へ。肉汁たっぷりのげんこつハンバーグを堪能します。</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 2日目 -->
+    <div id="day2" class="page">
+        <h2>■ 2日目：6月30日(火)</h2>
+        <h3>【テーマ：浜松大遠征！効率一筆書きルートで巡る名物＆絶景ドライブ】</h3>
+        <a href="https://www.google.com/maps/dir/?api=1&origin=静岡駅&waypoints=うなぎパイファクトリー|SWEETS+BANK|竜ヶ岩洞|蓬莱橋&destination=静岡駅" target="_blank" class="link-block">【2日目】最適化・全スポット周遊ルート(全体マップ)</a>
+
+        <div class="timeline" style="margin-top: 15px;">
+            <div class="timeline-item">
+                <span class="time">08:30</span>
+                <div class="event">ホテルアソシア静岡の朝食バイキングでエネルギーをチャージ。</div>
+            </div>
+            <div class="timeline-item">
+                <span class="time">10:00</span>
+                <div class="event">ホテルでレンタカーを受け取り、浜松へ向けて出発！</div>
+            </div>
+            <div class="timeline-item">
+                <span class="time">10:00〜11:15</span>
+                <div class="event">車で浜松方面へ移動(※途中で昼食：鰻)</div>
+                <div class="detail">高速料金(静岡IC→浜松西IC)：2,290円<br>浜松西IC近くなどの老舗うなぎ専門店へ立ち寄り、本場の鰻重を贅沢に味わいます。</div>
+                <a href="https://www.google.com/maps/dir/?api=1&origin=静岡駅&destination=うなぎパイファクトリー" target="_blank" class="link-block">ナビ：静岡駅 → うなぎパイファクトリー(高速利用：約1時間15分)</a>
+            </div>
+            <div class="timeline-item">
+                <span class="time">11:15〜12:45</span>
+                <div class="event">昼食(鰻) ＆ うなぎパイファクトリー</div>
+                <div class="detail">「夜のお菓子」うなぎパイの職人技を見学。売店限定のお徳用袋の購入や、カフェでのスイーツも人気です。<br>工場見学料：無料(要フロント受付)</div>
+                <a href="https://www.unagipai-factory.jp/" target="_blank" class="link-block">うなぎパイファクトリー 公式サイト</a>
+            </div>
+            <div class="timeline-item">
+                <span class="time">12:45〜13:10</span>
+                <div class="event">車で「SWEETS BANK」へ移動</div>
+                <a href="https://www.google.com/maps/dir/?api=1&origin=うなぎパイファクトリー&destination=SWEETS+BANK" target="_blank" class="link-block">ナビ：うなぎパイファクトリー → SWEETS BANK(一般道：約25分)</a>
+            </div>
+            <div class="timeline-item">
+                <span class="time">13:10〜14:00</span>
+                <div class="event">SWEETS BANK(スイーツバンク)</div>
+                <div class="detail">実物の13倍の「巨大な机や椅子」が並ぶ春華堂の話題スポット。小人になったようなおもしろい記念写真を撮影し、カフェで一息。<br>入場料：無料</div>
+                <a href="https://sweetsbank.jp/" target="_blank" class="link-block">SWEETS BANK 公式サイト</a>
+            </div>
+            <div class="timeline-item">
+                <span class="time">14:00〜14:40</span>
+                <div class="event">車で「竜ヶ岩洞」へ移動(ここから北上します)</div>
+                <a href="https://www.google.com/maps/dir/?api=1&origin=SWEETS+BANK&destination=竜ヶ岩洞" target="_blank" class="link-block">ナビ：SWEETS BANK → 竜ヶ岩洞(一般道：約40分)</a>
+            </div>
+            <div class="timeline-item">
+                <span class="time">14:40〜15:50</span>
+                <div class="event">竜ヶ岩洞(★成光希望)</div>
+                <div class="detail">東海地方最大級の神秘的な鍾乳洞。年間を通して18度前後に保たれたひんやりとした洞内を進むと、落差30メートルの地底の大滝が現れます。<br>入洞料：1,000円</div>
+                <a href="https://www.doukutu.co.jp/" target="_blank" class="link-block">竜ヶ岩洞 公式サイト</a>
+            </div>
+            <div class="timeline-item">
+                <span class="time">15:50〜16:50</span>
+                <div class="event">車で島田・「蓬莱橋」へ大移動(新東名でスマートに東進!)</div>
+                <div class="detail">高速料金(新東名： 浜松いなさIC → 島田金谷IC)：1,440円</div>
+                <a href="https://www.google.com/maps/dir/?api=1&origin=竜ヶ岩洞&destination=蓬莱橋" target="_blank" class="link-block">ナビ：竜ヶ岩洞 → 蓬莱橋(新東名高速利用：約1時間)</a>
+            </div>
+            <div class="timeline-item">
+                <span class="time">16:50〜17:40</span>
+                <div class="event">蓬莱橋(★成光希望)</div>
+                <div class="detail">世界一長い木造歩道橋としてギネスに認定されている名所。夕暮れ時のノスタルジックな光に照らされる長い一本橋の散策は、最高の思い出になります。<br>通行料：100円</div>
+                <a href="https://www.shimada-ta.jp/tourism/tourism_detail.php?id=1" target="_blank" class="link-block">蓬莱橋(島田市観光協会)</a>
+            </div>
+            <div class="timeline-item">
+                <span class="time">17:40〜18:25</span>
+                <div class="event">車で静岡駅へ戻る (レンタカー返却)</div>
+                <div class="detail">2日間のドライブを終えてホテルアソシア静岡で車を返却。運転から解放されます！</div>
+                <a href="https://www.google.com/maps/dir/?api=1&origin=蓬莱橋&destination=静岡駅" target="_blank" class="link-block">ナビ：蓬莱橋 → 静岡駅(一般道・国1バイパス利用：約45分)</a>
+            </div>
+            <div class="timeline-item">
+                <span class="time">19:00〜</span>
+                <div class="event">夕食：静岡おでん(海ぼうず アスティ静岡店)</div>
+                <div class="detail">駅直結の居酒屋へ。名物の「静岡おでん」や黒はんぺんフライをつまみに、お人でお気兼ねなくご当地のお酒で乾杯できます。</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 3日目 -->
+    <div id="day3" class="page">
+        <h2>■ 3日目：7月1日(水)</h2>
+        <h3>【テーマ：公共交通機関で富士宮満喫 → 荷物最小限で16時前におこもり宿へ】</h3>
+        <p class="theme-desc">(この日はJRの電車と路線バスでの移動になります)</p>
+
+        <div class="timeline">
+            <div class="timeline-item">
+                <span class="time">07:30〜08:20</span>
+                <div class="event">ホテルアソシア静岡で朝食を楽しみ、チェックアウトを済ませます。</div>
+            </div>
+            <div class="timeline-item">
+                <span class="time">08:35 〜 09:31</span>
+                <div class="event">静岡駅発 → (JR東海道線) → 09:07 富士駅着 / 09:12 富士駅発 → (JR身延線) → 09:31 富士宮駅着</div>
+                <div class="detail">JR電車の運賃：860円</div>
+            </div>
+            <div class="timeline-item">
+                <span class="time">09:40〜10:40</span>
+                <div class="event">静岡県富士山世界遺産センター(★成光希望)</div>
+                <div class="detail">富士宮駅から徒歩10分。水面に映る「逆さ富士」をモチーフにした木格子の大胆な建築美は必見。館内のらせんスロープを登りながら、富士山を疑似登山するような最新展示を楽しめます。大きな荷物は駅かセンターのロッカーへ。<br>常設展観覧料：500円</div>
+                <a href="https://mtfuji-whc.jp/" target="_blank" class="link-block">静岡県富士山世界遺産センター 公式サイト</a>
+            </div>
+            <div class="timeline-item">
+                <span class="time">10:50</span>
+                <div class="event">富士宮駅から路線バス(富士急静岡バス)に乗車。</div>
+            </div>
+            <div class="timeline-item">
+                <span class="time">11:20</span>
+                <div class="event">「白糸の滝」バス停に到着。</div>
+            </div>
+            <div class="timeline-item">
+                <span class="time">11:20〜12:50</span>
+                <div class="event">白糸の滝(★成光希望) ＆ 昼食：富士宮焼きそば</div>
+                <div class="detail">路線バス運賃：片道710円(往復1,420円)<br>富士山の伏流水が崖から絹糸のように湧き出す、天下の名瀑「白糸の滝」と「音止の滝」を散策。<br>昼食：周辺の店舗や駅近くのお宮横丁などで、コシのある麺とイワシのだし粉が特徴のご当地グルメ「富士宮焼きそば」を堪能します。</div>
+                <a href="https://fujinomiya.gr.jp/guide/170/" target="_blank" class="link-block">白糸の滝(富士宮市観光協会)</a>
+            </div>
+            <div class="timeline-item">
+                <span class="time">12:57</span>
+                <div class="event">「白糸の滝」バス停発 → 路線バスで富士宮駅へ戻ります。</div>
+            </div>
+            <div class="timeline-item">
+                <span class="time">13:27</span>
+                <div class="event">富士宮駅に到着。預けたキャリーケースを回収します。</div>
+            </div>
+            <div class="timeline-item">
+                <span class="time">13:38</span>
+                <div class="event">富士宮駅を出発。ここからJR線を乗り継ぎ、伊豆の東海岸「伊東駅」へ大移動します。</div>
+                <div class="detail">JR電車(在来線)の運賃：2,310円</div>
+            </div>
+            <div class="timeline-item">
+                <span class="time">15:09</span>
+                <div class="event">伊東駅に到着。</div>
+            </div>
+            <div class="timeline-item">
+                <span class="time">15:10〜15:35</span>
+                <div class="event">伊東駅周辺で「室内用食品」の購入(25分間)</div>
+                <div class="detail">駅前で、今夜お部屋で楽しむ用の伊豆のご当地クラフトビール、おつまみ、地元のスイーツなどを購入。重い荷物を富士宮まで持ち歩く必要がなくスマートです。</div>
+            </div>
+            <div class="timeline-item">
+                <span class="time">15:40</span>
+                <div class="event">伊東駅からタクシーで宿へ移動(タクシーで約5分・約1,000円)。</div>
+            </div>
+            <div class="timeline-item">
+                <span class="time">15:50頃</span>
+                <div class="event">ラグジュアリー和ホテル風の薫UMI チェックイン！</div>
+                <div class="detail">16時前のベストタイミングで到着。全室絶景オーシャンビュー、滞在中のドリンクや夜食がすべて無料の「オールインクルーシブ」の大人のおこもり宿。夕食までの時間は、海を見渡す貸切寝湯温泉に浸かったり、無料のラウンジバーを満喫します。</div>
+                <a href="https://www.kazenokaori.jp/umi/" target="_blank" class="link-block">ラグジュアリー和ホテル風の薫UMI 公式サイト</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- 4日目 -->
+    <div id="day4" class="page">
+        <h2>■ 4日目：7月2日(木)</h2>
+        <h3>【テーマ：無駄のない渋谷完結ルート！ Nintendo TOKYOから羽田へ直行】</h3>
+
+        <div class="timeline">
+            <div class="timeline-item">
+                <span class="time">午前</span>
+                <div class="event">プレミアムな朝食を楽しみ、温泉に浸かってチェックアウト。JR線(湘南新宿ライン直通など)で渋谷駅へ向かいます。</div>
+                <div class="detail">JR電車の運賃：2,310円</div>
+            </div>
+            <div class="timeline-item">
+                <span class="time">11:30頃</span>
+                <div class="event">渋谷駅に到着・荷物を預ける</div>
+                <div class="detail">到着後、帰りのバス乗り場がある「渋谷マークシティ」のロッカー等に大きな荷物を預けて手ぶらになります。</div>
+                <a href="https://www.limousinebus.co.jp/" target="_blank" class="link-block">渋谷マークシティ(空港リムジンバス) 公式サイト</a>
+            </div>
+            <div class="timeline-item">
+                <span class="time">11:45〜16:15</span>
+                <div class="event">Nintendo TOKYO ＆ 渋谷観光・ランチ(たっぷり4時間半!)</div>
+                <div class="detail">渋谷パルコ内の「Nintendo TOKYO」で限定グッズの買い物を全力で楽しみます！ 新宿への移動をカットしたため、時間に追われずゆっくりランチやカフェを楽しむ余裕があります。<br>入場料：無料</div>
+                <a href="https://www.nintendo.co.jp/officialstore/" target="_blank" class="link-block">Nintendo TOKYO(任天堂公式) サイト</a>
+            </div>
+            <div class="timeline-item">
+                <span class="time">16:15</span>
+                <div class="event">渋谷マークシティへ戻り、荷物を回収。</div>
+            </div>
+            <div class="timeline-item">
+                <span class="time">16:30</span>
+                <div class="event">「渋谷マークシティ」 5階の高速バスのりばへ移動</div>
+            </div>
+            <div class="timeline-item">
+                <span class="time">16:45</span>
+                <div class="event">羽田空港行きのリムジンバスに乗車</div>
+                <div class="detail">ここから羽田空港まで乗り換えなし、座っているだけで約30〜45分で直行できます。新宿に回る必要がないため、最もスマートなルートです。<br>バス運賃：1,400円</div>
+            </div>
+            <div class="timeline-item">
+                <span class="time">17:30頃</span>
+                <div class="event">羽田空港に到着</div>
+                <div class="detail">余裕を持って空港に到着！ お土産の最終チェックやチェックインを済ませます。</div>
+            </div>
+            <div class="timeline-item">
+                <span class="time">18:50</span>
+                <div class="event">東京(羽田)発HD035便出発</div>
+            </div>
+            <div class="timeline-item">
+                <span class="time">20:20</span>
+                <div class="event">札幌(新千歳)空港 到着 → バスとタクシーで大曲のご自宅へ。お疲れ様でした！</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- URL一覧 -->
+    <div id="urls" class="page">
+        <h2>各観光地・スポット 関連URL一覧(まとめ)</h2>
+        <div style="margin-top: 10px;">
+            <a href="https://www.hokuto-kotsu.com/" target="_blank" class="btn-url"><strong>新千歳空港連絡バス(北都交通)</strong>https://www.hokuto-kotsu.com/</a>
+            <a href="https://www.associa.com/sth/" target="_blank" class="btn-url"><strong>ホテルアソシア静岡</strong>https://www.associa.com/sth/</a>
+            <a href="https://www.kazenokaori.jp/umi/" target="_blank" class="btn-url"><strong>ラグジュアリー和ホテル風の薫UMI</strong>https://www.kazenokaori.jp/umi/</a>
+            <a href="https://www.limousinebus.co.jp/" target="_blank" class="btn-url"><strong>渋谷マークシティ(空港リムジンバス)</strong>https://www.limousinebus.co.jp/</a>
+            <a href="https://nihondaira-yume-terrace.jp/" target="_blank" class="btn-url"><strong>日本平夢テラス</strong>https://nihondaira-yume-terrace.jp/</a>
+            <a href="https://www.shizutetsu-ropeway.co.jp/" target="_blank" class="btn-url"><strong>日本平ロープウェイ</strong>https://www.shizutetsu-ropeway.co.jp/</a>
+            <a href="https://www.toshogu.or.jp/" target="_blank" class="btn-url"><strong>久能山東照宮</strong>https://www.toshogu.or.jp/</a>
+            <a href="https://www.visit-shizuoka.com/spots/detail.php?kanko=336" target="_blank" class="btn-url"><strong>三保松原(静岡市観光ガイド)</strong>https://www.visit-shizuoka.com/spots/detail.php?kanko=336</a>
+            <a href="https://www.dream-plaza.co.jp/" target="_blank" class="btn-url"><strong>エスパルスドリームプラザ</strong>https://www.dream-plaza.co.jp/</a>
+            <a href="https://www.unagipai-factory.jp/" target="_blank" class="btn-url"><strong>うなぎパイファクトリー</strong>https://www.unagipai-factory.jp/</a>
+            <a href="https://www.doukutu.co.jp/" target="_blank" class="btn-url"><strong>竜ヶ岩洞</strong>https://www.doukutu.co.jp/</a>
+            <a href="https://sweetsbank.jp/" target="_blank" class="btn-url"><strong>SWEETS BANK</strong>https://sweetsbank.jp/</a>
+            <a href="https://www.shimada-ta.jp/tourism/tourism_detail.php?id=1" target="_blank" class="btn-url"><strong>蓬莱橋(島田市観光協会)</strong>https://www.shimada-ta.jp/tourism/tourism_detail.php?id=1</a>
+            <a href="https://mtfuji-whc.jp/" target="_blank" class="btn-url"><strong>静岡県富士山世界遺産センター</strong>https://mtfuji-whc.jp/</a>
+            <a href="https://fujinomiya.gr.jp/guide/170/" target="_blank" class="btn-url"><strong>白糸の滝(富士宮市観光協会)</strong>https://fujinomiya.gr.jp/guide/170/</a>
+            <a href="https://www.nintendo.co.jp/officialstore/" target="_blank" class="btn-url"><strong>Nintendo TOKYO(任天堂公式)</strong>https://www.nintendo.co.jp/officialstore/</a>
+        </div>
+    </div>
+
+    <!-- 料金一覧 -->
+    <div id="prices" class="page">
+        <h2>旅程内 経費・料金一覧まとめ</h2>
+        <p class="theme-desc" style="font-size:13px;">※お二人での新婚旅行を想定し、「大人1名あたり」と「お二人 (2名)での合計目安」を記載しています。</p>
+        
+        <h3>1. 公共交通機関・連絡バス(固定費)</h3>
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>項目・区間</th>
+                        <th>1名あたり料金</th>
+                        <th>2名合計料金</th>
+                        <th>備考</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>新千歳空港連絡バス(往路)</td>
+                        <td>約1,200円</td>
+                        <td>約2,400円</td>
+                        <td>三井アウトレットパーク入口 → 空港</td>
+                    </tr>
+                    <tr>
+                        <td>羽田空港→静岡駅</td>
+                        <td>約6,270円</td>
+                        <td>約12,540円</td>
+                        <td>モノレール+新幹線ひかり(自由席)</td>
+                    </tr>
+                    <tr>
+                        <td>JR線(東海道・身延線)</td>
+                        <td>860円</td>
+                        <td>1,720円</td>
+                        <td>静岡駅 → 富士宮駅(3日目)</td>
+                    </tr>
+                    <tr>
+                        <td>路線バス(富士急静岡バス)</td>
+                        <td>1,420円</td>
+                        <td>2,840円</td>
+                        <td>富士宮駅 ⇔ 白糸の滝(往復)</td>
+                    </tr>
+                    <tr>
+                        <td>JR線(身延・東海道・伊東線)</td>
+                        <td>2,310円</td>
+                        <td>4,620円</td>
+                        <td>富士宮駅 → 伊東駅(3日目)</td>
+                    </tr>
+                    <tr>
+                        <td>JR線・伊豆急行線</td>
+                        <td>2,310円</td>
+                        <td>4,620円</td>
+                        <td>伊東駅 ➔ 渋谷駅(4日目・在来線)</td>
+                    </tr>
+                    <tr>
+                        <td>空港リムジンバス</td>
+                        <td>1,400円</td>
+                        <td>2,800円</td>
+                        <td>渋谷マークシティ ➔ 羽田空港</td>
+                    </tr>
+                    <tr style="font-weight: bold; background: #fafafa;">
+                        <td>【公共交通機関 小計】</td>
+                        <td>17,570円</td>
+                        <td>31,540円</td>
+                        <td>新宿移動をカットし1名あたり180円削減</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <h3>2. タクシー料金・高速道路料金(1グループ/1台あたり共通)</h3>
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>日程・項目</th>
+                        <th>区間・内容</th>
+                        <th>金額(1台あたり)</th>
+                        <th>備考</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>1日目:朝タクシー</td>
+                        <td>自宅(大曲)→バス停</td>
+                        <td>約1,000円〜1,300円</td>
+                        <td>迎車料金含む目安</td>
+                    </tr>
+                    <tr>
+                        <td>1日目:夜タクシー</td>
+                        <td>静岡駅 ⇔ さわやか(往復)</td>
+                        <td>約3,000円〜4,000円</td>
+                        <td>片道約1,500〜2,000円目安</td>
+                    </tr>
+                    <tr>
+                        <td>2日目:高速道路料金</td>
+                        <td>東名:静岡IC→浜松西IC</td>
+                        <td>2,290円</td>
+                        <td>レンタカー往路</td>
+                    </tr>
+                    <tr>
+                        <td>2日目:高速道路料金</td>
+                        <td>新東名: 浜松いなさIC → 島田金谷IC</td>
+                        <td>1,440円</td>
+                        <td>最適化一筆書きルート(復路)</td>
+                    </tr>
+                    <tr>
+                        <td>3日目:夕方タクシー</td>
+                        <td>伊東駅 ⇔ ホテル風の薫UMI</td>
+                        <td>約1,000円</td>
+                        <td>移動約5分(荷物移動用)</td>
+                    </tr>
+                    <tr style="font-weight: bold; background: #fafafa;">
+                        <td>【タクシー・高速 小計】</td>
+                        <td>-</td>
+                        <td>約8,730円〜10,030円</td>
+                        <td></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <h3>3. 観光地 入場料・拝観料・通行料</h3>
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>スポット名</th>
+                        <th>1名あたり料金</th>
+                        <th>2名合計料金</th>
+                        <th>備考</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td>日本平夢テラス</td><td>無料</td><td>無料</td><td>1日目</td></tr>
+                    <tr><td>日本平ロープウェイ+久野山東照宮</td><td>1,950円</td><td>3,900円</td><td>1日目(セット券価格)</td></tr>
+                    <tr><td>三保松原</td><td>無料</td><td>無料</td><td>1日目</td></tr>
+                    <tr><td>エスパルスドリームプラザ</td><td>無料</td><td>無料</td><td>1日目(※観覧車は別途1人600円)</td></tr>
+                    <tr><td>うなぎパイファクトリー</td><td>無料</td><td>無料</td><td>2日目</td></tr>
+                    <tr><td>SWEETS BANK</td><td>無料</td><td>無料</td><td>2日目</td></tr>
+                    <tr><td>竜ヶ岩洞(鍾乳洞)</td><td>1,000円</td><td>2,000円</td><td>2日目</td></tr>
+                    <tr><td>蓬莱橋</td><td>100円</td><td>200円</td><td>2日目(歩行者通行料)</td></tr>
+                    <tr><td>静岡県富士山世界遺産センター</td><td>500円</td><td>1,000円</td><td>3日目(常設展)</td></tr>
+                    <tr><td>白糸の滝</td><td>無料</td><td>無料</td><td>3日目</td></tr>
+                    <tr><td>Nintendo TOKYO</td><td>無料</td><td>無料</td><td>4日目</td></tr>
+                    <tr style="font-weight: bold; background: #fafafa;">
+                        <td>【観光・入場料小計】</td>
+                        <td>3,550円</td>
+                        <td>7,100円</td>
+                        <td></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="total-box">
+            <strong>旅程内「記載経費」の総合計(お二人分)</strong><br>
+            • お二人での合計: 約 47,370円〜48,670円<br>
+            <span style="font-size: 12px; color: #555;">(内訳:公共交通 31,540円 + タクシー・高速約9,380円+入場料 7,100円)</span>
+        </div>
+    </div>
+</div>
+
+<script>
+    function switchTab(tabId) {
+        // すべてのページを非表示にする
+        const pages = document.querySelectorAll('.page');
+        pages.forEach(page => page.classList.remove('active'));
+
+        // すべてのタブボタンの選択状態を解除
+        const tabs = document.querySelectorAll('.tab-btn');
+        tabs.forEach(tab => tab.classList.remove('active'));
+
+        // 対象のページとタブをアクティブにする
+        document.getElementById(tabId).classList.add('active');
+        event.currentTarget.classList.add('active');
+
+        // 上部へスクロール
+        window.scrollTo({top: 0, behavior: 'smooth'});
+    }
+</script>
+
+</body>
+</html>
